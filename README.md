@@ -2,6 +2,8 @@
 
 📚 Content management API for integrating with NodeJS(backend) and MongoDB
 
+# Features
+
 - 🚀 **Easy to use**: Easy to install in your project.
 - ✅ **ES6+ && TS**: TypeScript and ES6+ support(JS).
 - 📦 **No dependencies**: You don't depend on anything else.
