@@ -1,6 +1,6 @@
 {
-  "name": "cms",
-  "version": "1.0.0",
+  "name": "@jetvil/cm-api",
+  "version": "0.1.0",
   "description": "📚 Content management API for integrating with NodeJS(backend) and MongoDB",
   "main": "index.js",
   "scripts": {
@@ -26,11 +26,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jetvil/cms.git"
+    "url": "git+https://github.com/jetvil/cm-api.git"
   },
   "keywords": [
     "jetvil",
-    "cms",
+    "cm-api",
     "typescript",
     "nodejs",
     "javascript"
@@ -38,7 +38,7 @@
   "author": "JetVil",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/jetvil/cms/issues"
+    "url": "https://github.com/jetvil/cm-api/issues"
   },
-  "homepage": "https://github.com/jetvil/cms#readme"
+  "homepage": "https://github.com/jetvil/cm-api#readme"
 }
