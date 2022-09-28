@@ -1,4 +1,4 @@
-import createJetvilCMS from "./lib/cms/config/createJetvilCMS";
+import createJetvilCMS from "./lib/cm-api/config/createJetvilCMS";
 
 const jetvil = () => createJetvilCMS();
 
