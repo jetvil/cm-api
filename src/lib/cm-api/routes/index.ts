@@ -1,46 +1,69 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import express from "express";
+import { Router } from "express";
 // create routes for all the controllers
-const router = express.Router();
-const controllers: any = {
+const router = Router();
+
+const actions = {
+  create: "/",
+  read: "/:id",
+  update: "/:id",
+  delete: "/:id",
+};
+const controllers: Record<string, Record<string, Record<string, string | StringConstructor | NumberConstructor>>> = {
   user: {
-    create: "/",
-    read: "/:id",
-    update: "/:id",
-    delete: "/:id",
+    schema: {
+      id: String,
+      name: String,
+      email: String,
+      password: String,
+      team: "ref:team",
+    },
   },
   post: {
-    create: "/",
-    read: "/:id",
-    update: "/:id",
-    delete: "/:id",
+    schema: {
+      id: Number,
+      title: String,
+      content: String,
+      author: "ref:user",
+    },
+  },
+  team: {
+    schema: {
+      id: Number,
+      name: String,
+      members: "ref:user[]",
+    },
   },
 };
+
 const getMethod = (action: string) =>
   action === "read" ? "get" : action === "create" ? "post" : action === "update" ? "put" : "delete";
 
-Object.keys(controllers).forEach((controller) => {
-  const controllerRoutes: any = controllers[controller];
+console.log(process.argv);
+Object.keys(controllers).forEach((controllerKey: string) => {
+  const controllerRoutes = controllers[controllerKey];
   const routes: (string | ((_req: any, _res: any) => void))[][] = [];
-  Object.keys(controllerRoutes).forEach((action) => {
-    // for each action, create a route and make an object like: ['/user/:id', (req, res) => {}]
+  Object.keys(actions).forEach((action) => {
     const route = [
       action,
-      "/" + controller + controllerRoutes[action],
+      "/" + controllerKey + (actions as any)[action],
       (_req: any, _res: any) => {
-        console.log("hello from " + controller + " " + action + _req?.params?.id);
-        return _res.send("hello from " + controller + " " + action + _req?.params?.id);
+        return _res.send(`Hello ${controllerKey} ${action} ${_req.params.id ? `with id: ${_req.params.id}` : ""}`);
       },
     ];
-    // add the route to the routes array
+    console.log(route);
     routes.push(route);
-
-    // add the route to the express router
-
-    // router.get('/user/:id', (req, res) => {})
   });
+
+  routes.push(["read", `/${controllerKey}s`, (_req: any, _res: any) => _res.send(`Hello ${controllerKey}s`)]);
+
   routes.forEach((route) => {
+    console.info(`Adding route: ${getMethod(route[0] as any)} ${route[1]}`);
+    console.info(`Route has schema: `, controllerRoutes.schema);
+    Object.keys(controllerRoutes.schema).forEach((key) => {
+      console.info(`Schema has key: ${key} with type: ${controllerRoutes.schema[key]}`);
+    });
     router[getMethod(route[0] as string)](route[1] as string, route[2] as (_req: any, _res: any) => void);
   });
 });
