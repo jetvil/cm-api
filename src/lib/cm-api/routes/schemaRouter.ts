@@ -1,8 +1,6 @@
-/* eslint-disable no-console */
 import { PrismaClient } from "@prisma/client";
 import { Router } from "express";
 import { getPrismaFilter, getPrismaMethod } from "../data/prismaUtils";
-// import { getPrismaMethod } from "../data/getPrismaMethod";
 import { actions, functionType, methodTypes } from "./types";
 
 const createSchemaRouter = ({
@@ -25,8 +23,11 @@ const createSchemaRouter = ({
           const prismaMethod = getPrismaMethod(method);
           const func = client[schema][prismaMethod];
           const filter = getPrismaFilter(method);
+          console.log("req.body", req.body);
+          console.log("req.params", req.params);
+          console.log("req.query", req.query);
+          console.log({ [filter]: req.body || req.params || req.query });
           const result = await func({ [filter]: req.body || req.params || req.query });
-          console.log(result);
           return res.json(result);
         } catch (error: any) {
           console.log(error);
@@ -43,10 +44,9 @@ const createSchemaRouter = ({
     handler: async (_req: any, _res: any) => {
       try {
         const result = await client[schema].findMany();
-        console.log(result);
         return _res.json(result);
       } catch (error: any) {
-        console.error(error);
+        console.log(error);
         return _res.status(500).json({ error: error.message });
       }
     },
