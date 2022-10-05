@@ -1,8 +1,9 @@
 /* eslint-disable no-console */
 import { PrismaClient } from "@prisma/client";
+import { getPrismaSchemas } from "../data";
 
 import createIndexRouter from "../routes";
-import { actions, methodTypes } from "../routes/types";
+import { actions, methodTypes, middlewareType } from "../routes/types";
 
 export default class JetvilCMS {
   private client: PrismaClient;
@@ -14,24 +15,17 @@ export default class JetvilCMS {
     this.client = client;
   };
 
-  public router = (client: PrismaClient | undefined = undefined) => {
-    if (!this.client && !client) {
-      throw new Error("No client provided");
-    }
-
-    const prismaClient: PrismaClient = this.client ?? client;
-    const expressRouter = createIndexRouter({ client: prismaClient });
-    return expressRouter;
-  };
-  public customRouter = ({
+  public router = ({
     client = undefined,
-    schemas = [],
+    schemas = getPrismaSchemas(client ?? this.client),
     methods = Object.keys(actions),
+    middleware = [],
   }: {
     client?: PrismaClient;
     methods?: Array<string>;
     schemas?: Array<string>;
-  }) => {
+    middleware?: middlewareType;
+  } = {}) => {
     if (!this.client && !client) {
       throw new Error("No client provided");
     }
@@ -39,7 +33,12 @@ export default class JetvilCMS {
       methods.includes(key),
     ) as Array<methodTypes>;
     const prismaClient: PrismaClient = this.client ?? client;
-    const expressRouter = createIndexRouter({ client: prismaClient, schemas, methods: convertedMethods });
+    const expressRouter = createIndexRouter({
+      client: prismaClient,
+      schemas,
+      methods: convertedMethods,
+      middleware: middleware,
+    });
     return expressRouter;
   };
 }
