@@ -7,7 +7,7 @@
 [![GitHub Repo stars](https://img.shields.io/github/stars/jetvil/cm-api?color=E9E9E9&logo=Github&style=for-the-badge)](https://www.github.com/jetvil/cm-api)&nbsp;
 [![GitHub issues](https://img.shields.io/github/issues-raw/jetvil/cm-api?label=issues&style=for-the-badge)](https://github.com/jetvil/cm-api/issues)&nbsp;
 
-📚 Content management API for integrating with NodeJS(backend) and MongoDB
+📚 Content management API for integrating with NodeJS Express(backend) and Prisma(ORM)
 
 # Features
 
