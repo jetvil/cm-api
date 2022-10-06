@@ -1,17 +1,19 @@
-# .github
-# tests
-# src
-# coverage
-# jest.config.ts
-# node_modules
-# tsconfig.json
-# .vscode
-# .eslintrc.json
-# .gitignore
-# .npmignore
-# CHANGELOG.md
-# .nvmrc
-# check-ci-version.ts
-*
-!dist
-!package*.json
+.github
+tests
+src
+coverage
+jest.config.ts
+node_modules
+tsconfig.json
+.vscode
+.eslintrc.json
+.gitignore
+.npmignore
+CHANGELOG.md
+.nvmrc
+check-ci-version.ts
+usr
+# *
+# !dist
+# !package*.json
+**.env**
