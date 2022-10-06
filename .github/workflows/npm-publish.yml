@@ -40,23 +40,23 @@ jobs:
       - name: run test suite
         run: |
           npm test
-  # publish-npm:
-  #   needs: [suite, check-version]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #     - uses: actions/setup-node@v3
-  #       with:
-  #         node-version: 16.x
-  #         registry-url: https://registry.npmjs.org/
-  #     - name: install npm modules
-  #       run: |
-  #         npm ci
-  #     - name: build code base
-  #       run: |
-  #         npm run build
-  #     - name: publish package
-  #       run: |
-  #         npm publish
-  #       env:
-  #         NODE_AUTH_TOKEN: ${{secrets.NPM_CI_TOKEN}}
+  publish-npm:
+    needs: [suite, check-version]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: https://registry.npmjs.org/
+      - name: install npm modules
+        run: |
+          npm ci
+      - name: build code base
+        run: |
+          npm run build
+      - name: publish package
+        run: |
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_CI_TOKEN}}
