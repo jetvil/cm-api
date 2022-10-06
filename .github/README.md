@@ -7,17 +7,18 @@
 [![GitHub Repo stars](https://img.shields.io/github/stars/jetvil/cm-api?color=E9E9E9&logo=Github&style=for-the-badge)](https://www.github.com/jetvil/cm-api)&nbsp;
 [![GitHub issues](https://img.shields.io/github/issues-raw/jetvil/cm-api?label=issues&style=for-the-badge)](https://github.com/jetvil/cm-api/issues)&nbsp;
 
-Type related validation library for ES6+ and clicript projects✅.
-
-Also available in [@jetvil/core](https://npmjs.com/package/@jetvil/core)
+📚 Content management API for integrating with NodeJS(backend) and MongoDB
 
 # Features
 
 - 🚀 **Easy to use**: Easy to install in your project.
-- ✅ **ES6+ && TS**: clicript and ES6+ support(JS).
-- 🐭 **Small footprint**: With less then 10kb, you won't even notice.
-- 📦 **No dependencies**: You don't depend on anything else.
+- ✅ **ES6+ && TS**: TypeScript and ES6+ support(JS).
+- 📦 **Required dependencies**: You don't need what you won't use: express and prisma.
 - 💵 **Free**: It's free and always will be, the beauty of open source.
+
+Take in mind that this solution is for when you want to control your own backend and frontend, but do not want to have struggle to create a cms with all the routes and schemas and database handlers that come with it.
+
+When you are looking for a full cms solution, we recommend strapi or changing languages and taking wagtail for python.
 
 # Getting Started
 

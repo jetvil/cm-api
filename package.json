@@ -1,7 +1,7 @@
 {
   "name": "@jetvil/cm-api",
   "version": "0.1.0",
-  "description": "📚 Content management API for integrating with NodeJS(backend) and MongoDB",
+  "description": "📚 Content management API for integrating with NodeJS(express) and Prisma ORM",
   "main": "index.js",
   "scripts": {
     "build": "tsc",
