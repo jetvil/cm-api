@@ -4,17 +4,21 @@ import { Router } from "express";
 import { logger } from "../config/logger";
 import { getPrismaSchemas } from "../data";
 import createSchemaRouter from "./schemaRouter";
-import { actions, methodTypes, middlewareType } from "./types";
+import { actionTypes, httpMappers, methodTypes, middlewareType } from "./types";
 
 const createIndexRouter = ({
   client,
-  methods = Object.keys(actions) as Array<methodTypes>,
+  methods = Object.keys(httpMappers) as Array<methodTypes>,
+  actions = [{ methods: Object.keys(httpMappers), schemas: getPrismaSchemas(client) }] as Array<
+    Record<string, { methods?: Array<methodTypes>; actions?: Array<actionTypes> }>
+  >,
   schemas = getPrismaSchemas(client),
   middleware = [],
   verbose,
 }: {
   client: PrismaClient;
   methods?: Array<methodTypes>;
+  actions?: Array<Record<string, { methods?: Array<methodTypes>; actions?: Array<actionTypes> }>>;
   schemas?: Array<string>;
   middleware?: middlewareType;
   verbose: boolean;
@@ -35,6 +39,7 @@ const createIndexRouter = ({
       methods,
       middleware,
       verbose,
+      actions,
     });
     router.use(subRouter);
   });

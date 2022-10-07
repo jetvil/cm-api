@@ -16,6 +16,73 @@
 - 📦 **Required dependencies**: You don't need what you won't use: express and prisma.
 - 💵 **Free**: It's free and always will be, the beauty of open source.
 
+# Getting Started
+
+## Installation
+
+To use this package, **install** using `npm`, `yarn` or `pnpm`📥:
+
+```bash
+# npm
+npm install @jetvil/cm-api
+# yarn
+yarn add @jetvil/cm-api
+# pnpm
+pnpm install @jetvil/cm-api
+```
+
+## Usage
+
+```js
+const express = require("express");
+const { PrismaClient } = require("@prisma/client");
+const jetvil = require("@jetvil/cm-api");
+
+// prisma with eg. postgresql and schemas: "user" and "post"
+const prisma = new PrismaClient(); // Prisma ORM, you must have it installed and generated.
+const app = express();
+const jetvil = jetvil();
+
+app.use(express.json()); // for parsing application/json.
+
+jetvil.setClient(prisma); // Set prisma client here or pass it in the router() method.
+const router = jetvil.router(); // Empty by default, you can configure it by passing an object.
+
+app.use("/api", router);
+
+app.listen(3000, () => {
+  console.log("Server is running on port 3000");
+});
+// Routes such as /user and /post will be available at /api/user and /api/post
+```
+
+## Configuration
+
+You can configure the router by passing an object to the router() method.
+
+By doing so you can adjust the routes to your needs.
+
+```js
+const jetvil = require("@jetvil/cm-api");
+
+const jetvil = jetvil();
+
+const router = jetvil.router({
+  client: prisma, // Prisma ORM, you must have it installed and generated.
+  schemas: ["user", "post"], // Schemas to be used, if not specified, all schemas will be used, if specified: only these will be used.
+  methods: ["get", "post", "put", "delete"], // Methods to be used, if not specified, all methods will be used, if specified: only these will be used.
+  middleware: [
+    methods: ["get"], // Method to which the middleware will be applied.
+    schemas: ["user"], // Schema to which the middleware will be applied.
+    handler: (req, res, next) => {
+      // Middleware function.
+      next();
+    },
+  ],
+  verbose: true, // If true, the router will log the routes it generates.
+});
+```
+
 # Contributing
 
 Found a bug🦟? or want to suggest a new feature🆕? or just want to help🆘?

@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import { getPrismaSchemas } from "../data";
 
 import createIndexRouter from "../routes";
-import { actions, methodTypes, middlewareType } from "../routes/types";
+import { actionTypes, httpMappers, methodTypes, middlewareType } from "../routes/types";
 import { logger } from "./logger";
 
 export default class JetvilCMS {
@@ -20,12 +20,16 @@ export default class JetvilCMS {
   public router = ({
     client = undefined,
     schemas = getPrismaSchemas(client ?? this.client),
-    methods = Object.keys(actions) as Array<methodTypes>,
+    actions = [{ methods: Object.keys(httpMappers), schemas: getPrismaSchemas(client ?? this.client) }] as Array<
+      Record<string, { methods?: Array<methodTypes>; actions?: Array<actionTypes> }>
+    >,
+    methods = Object.keys(httpMappers) as Array<methodTypes>,
     middleware = [],
     verbose = false,
   }: {
     client?: PrismaClient;
     methods?: Array<methodTypes>;
+    actions?: Array<Record<string, { methods?: Array<methodTypes>; actions?: Array<actionTypes> }>>;
     schemas?: Array<string>;
     middleware?: middlewareType;
     verbose?: boolean;
@@ -34,7 +38,7 @@ export default class JetvilCMS {
     if (isFalsy(prismaClient)) {
       throw new Error("No client provided");
     }
-    const convertedMethods: Array<methodTypes> = Object.keys(actions).filter((key) =>
+    const convertedMethods: Array<methodTypes> = Object.keys(httpMappers).filter((key) =>
       methods.includes(key as methodTypes),
     ) as Array<methodTypes>;
     logger.info("Creating Index router...", verbose);
@@ -44,6 +48,7 @@ export default class JetvilCMS {
       methods: convertedMethods,
       middleware: middleware,
       verbose,
+      actions,
     });
     return expressRouter;
   };

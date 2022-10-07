@@ -1,3 +1,7 @@
+## 0.1.2
+
+- Updated the Readme for documentation.
+
 ## 0.1.1
 
 - Updated readme.
