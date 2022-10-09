@@ -10,6 +10,20 @@ try {
   const pkgSplit = localVersion.split(".");
   console.log(split, pkgSplit);
 
+  // make sure that if the version is in the format 1.0.0-beta.1 it will still work
+  if (split.length > 3) {
+    console.log("npm version is in beta format");
+    const betaSplit = split[3].split("-");
+    const betaPkgSplit = pkgSplit[3].split("-");
+    console.log(betaSplit, betaPkgSplit);
+
+    if (betaSplit[0] >= betaPkgSplit[0]) {
+      throw new Error("Version outdate");
+    } else {
+      console.log("Version is up to date");
+      process.exit(0);
+    }
+  }
   if (
     split[0] > pkgSplit[0] ||
     (split[0] >= pkgSplit[0] && split[1] >= pkgSplit[1]) ||
