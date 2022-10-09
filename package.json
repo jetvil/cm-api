@@ -1,6 +1,6 @@
 {
   "name": "@jetvil/cm-api",
-  "version": "0.1.1",
+  "version": "0.2.0-beta.1",
   "description": "📚 Content management API for integrating with NodeJS(express) and Prisma ORM",
   "main": "./dist/index.js",
   "scripts": {
