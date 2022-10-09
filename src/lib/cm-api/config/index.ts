@@ -4,7 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import { getPrismaSchemas } from "../data";
 
 import createIndexRouter from "../routes";
-import { actionTypes, httpMappers, methodTypes, middlewareType } from "../routes/types";
+import { actionTypes, httpMappers, methodTypes, middlewareType, schemaConfigType } from "../routes/types";
 import { logger } from "./logger";
 
 export default class JetvilCMS {
@@ -19,36 +19,43 @@ export default class JetvilCMS {
 
   public router = ({
     client = undefined,
-    schemas = getPrismaSchemas(client ?? this.client),
-    actions = [{ methods: Object.keys(httpMappers), schemas: getPrismaSchemas(client ?? this.client) }] as Array<
-      Record<string, { methods?: Array<methodTypes>; actions?: Array<actionTypes> }>
-    >,
-    methods = Object.keys(httpMappers) as Array<methodTypes>,
-    middleware = [],
+    global = {
+      schemas: getPrismaSchemas(client ?? this.client),
+      actions: [],
+      methods: Object.keys(httpMappers) as Array<methodTypes>,
+      middleware: [],
+    },
+    config = {},
     verbose = false,
   }: {
     client?: PrismaClient;
-    methods?: Array<methodTypes>;
-    actions?: Array<Record<string, { methods?: Array<methodTypes>; actions?: Array<actionTypes> }>>;
-    schemas?: Array<string>;
-    middleware?: middlewareType;
+    global: {
+      methods?: Array<methodTypes>;
+      actions?: Array<actionTypes>;
+      schemas?: Array<string>;
+      middleware?: middlewareType;
+    };
+    config?: schemaConfigType;
     verbose?: boolean;
-  } = {}) => {
+  }) => {
     const prismaClient: PrismaClient = this.client ?? client;
     if (isFalsy(prismaClient)) {
       throw new Error("No client provided");
     }
     const convertedMethods: Array<methodTypes> = Object.keys(httpMappers).filter((key) =>
-      methods.includes(key as methodTypes),
+      global.methods?.includes(key as methodTypes),
     ) as Array<methodTypes>;
     logger.info("Creating Index router...", verbose);
     const expressRouter = createIndexRouter({
       client: prismaClient,
-      schemas,
-      methods: convertedMethods,
-      middleware: middleware,
+      global: {
+        methods: convertedMethods,
+        actions: global.actions,
+        schemas: global.schemas,
+        middleware: global.middleware,
+      },
+      config,
       verbose,
-      actions,
     });
     return expressRouter;
   };
