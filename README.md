@@ -69,19 +69,47 @@ const jetvil = jetvil();
 
 const router = jetvil.router({
   client: prisma, // Prisma ORM, you must have it installed and generated.
-  schemas: ["user", "post"], // Schemas to be used, if not specified, all schemas will be used, if specified: only these will be used.
-  methods: ["get", "post", "put", "delete"], // Methods to be used, if not specified, all methods will be used, if specified: only these will be used.
-  middleware: [
-    methods: ["get"], // Method to which the middleware will be applied.
-    schemas: ["user"], // Schema to which the middleware will be applied.
-    handler: (req, res, next) => {
-      // Middleware function.
-      next();
+  global: {
+    schemas: ["user", "post", "profile"], // if specified, only these schemas will be available.
+    methods: ["get", "post", "put", "delete", "fake"], // if specified, only these methods will be available, 'fake' will not be used.
+    middleware: [
+      {
+        methods: ["get"], // Method to which the middleware will be applied.
+        schemas: ["user"], // Schema to which the middleware will be applied.
+        handler: (req, res, next) => {
+          // Middleware function.
+          next();
+        },
+      },
+    ],
+  },
+  config: {
+    // note how the schema is the key and the value is an object with the schema config.
+    // these are overrides for the global config on a per schema basis.
+    user: {
+      methods: ["get", "post", "put"], // note how the delete method is not included.
+      actions: ["read", "create", "update", "delete"], // these actions determine what the user can do with the schema.
+      // for example, if the user has the 'read' action, he can only read the schema.
+      // when the 'filter' action is included, the user can filter the schema on the schema.
+
+      middleware: [
+        // this middleware will override the global middleware for the user schema.
+        {
+          handler: (_req, _res, next) => {
+            console.log("Middleware applied to user schema!");
+            next();
+          },
+        },
+      ],
     },
-  ],
+  },
   verbose: true, // If true, the router will log the routes it generates.
 });
 ```
+
+# Documentation
+
+For more information, please check out the [documentation](https://github.com/jetvil/cm-api#documentation)📖.
 
 # Contributing
 
