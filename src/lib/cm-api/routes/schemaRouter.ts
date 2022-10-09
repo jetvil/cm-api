@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { isTruthy, isTruthyExtended, isFalsy } from "@jetvil/types";
+import { isTruthyExtended, isFalsy } from "@jetvil/types";
 import { PrismaClient } from "@prisma/client";
 import { Router } from "express";
 import { logger } from "../config/logger";
@@ -12,21 +12,17 @@ const createSchemaRouter = ({
   methods,
   middleware,
   verbose,
-  actions,
 }: {
   client: PrismaClient;
   schema: string;
   methods: Array<methodTypes>;
-  actions: Array<Record<string, { methods?: Array<methodTypes>; actions?: Array<actionTypes> }>>;
+  actions: Array<actionTypes>;
   middleware: middlewareType;
   verbose: boolean;
 }) => {
   logger.info(`Creating router for schema:: ${schema}...`, verbose);
   const router: Router = Router();
   const routes: Array<{ method: methodTypes; url: string; handler: functionType }> = [];
-
-  const actionsPerSchema = actions.filter((action) => isTruthy(action[schema]));
-  console.log("actionsPerSchema", actionsPerSchema);
 
   logger.info(`Creating routes for schema:: ${schema}...`, verbose);
   methods.forEach((method: methodTypes) => {

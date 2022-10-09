@@ -23,6 +23,13 @@ export type middlewareType = Array<{
   handler?: middlewareFunction;
   schemas?: Array<string>;
 }>;
+export type routeConfigType = {
+  methods?: Array<methodTypes>;
+  actions?: Array<actionTypes>;
+  schemas?: Array<string>;
+  middleware?: middlewareType;
+};
+export type schemaConfigType = Record<string, routeConfigType>;
 
 export const httpMappers: Record<methodTypes, any> = {
   post: "/",
