@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { PrismaClient } from "@prisma/client";
 import { Router } from "express";
 import { logger } from "../config/logger";
@@ -28,22 +27,18 @@ const createIndexRouter = ({
   verbose: boolean;
 }) => {
   const router: Router = Router();
-  // schemas ??= getPrismaSchemas(client);
 
   router.use((_req, _res, next) => {
     _res.header("X-Powered-By", "Express-Jetvil");
     return next();
   });
 
-  // find if there is a config for the schema and if not, use the global config
   const configs = Object.keys(config).map((schema) => {
-    if (!schemas.includes(schema)) {
-      throw new Error(`Schema ${schema} not found in Prisma client`);
+    if (false === schemas.includes(schema)) {
+      throw new Error(`Schema ${schema} not found in records`);
     }
     return { [schema]: config[schema] };
   });
-
-  console.log("configs", configs);
 
   logger.info("Creating Schema routers...", verbose);
   schemas.forEach((schemaKey: string) => {

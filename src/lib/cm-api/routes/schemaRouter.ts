@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { isTruthyExtended, isFalsy } from "@jetvil/types";
 import { PrismaClient } from "@prisma/client";
 import { Router } from "express";
@@ -83,7 +82,6 @@ const createSchemaRouter = ({
           const value = filter[key];
           return { ...acc, [key]: value };
         }, {});
-        console.log(where);
 
         const result = await client[schema].findMany({ where });
         return _res.json(result);

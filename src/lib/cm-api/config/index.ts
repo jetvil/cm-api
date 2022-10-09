@@ -56,10 +56,6 @@ export default class JetvilCMS {
       },
       config,
       verbose,
-      // schemas,
-      // methods: convertedMethods,
-      // middleware: middleware,
-      // actions,
     });
     return expressRouter;
   };
