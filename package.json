@@ -1,6 +1,6 @@
 {
   "name": "@jetvil/cm-api",
-  "version": "0.2.0-beta.2",
+  "version": "0.2.1",
   "description": "📚 Content management API for integrating with NodeJS(express) and Prisma ORM",
   "main": "./dist/index.js",
   "scripts": {
@@ -9,7 +9,7 @@
     "build": "tsc",
     "build:watch": "tsc --watch",
     "lint": "eslint src --ext .ts",
-    "check:ci": "npx ts-node ./check-ci-version.ts"
+    "check:ci": "npx @jetvil/cli version --package @jetvil/cm-api"
   },
   "devDependencies": {
     "@types/express": "^4.17.14",
